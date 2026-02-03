@@ -1,4 +1,4 @@
-package com.sudhird.risk.feature_aggregator.kafka;
+package com.sudhird.risk.feature_aggregator.kafka.producer;
 
 import com.sudhird.risk.feature_aggregator.model.RiskFeatureEvent;
 import com.sudhird.risk.feature_aggregator.model.UserEvent;

@@ -1,7 +1,10 @@
 package com.sudhird.risk.feature_aggregator.service;
 
-import com.sudhird.risk.feature_aggregator.kafka.FeatureProducer;
+import com.sudhird.risk.feature_aggregator.kafka.producer.DecisionProducer;
+import com.sudhird.risk.feature_aggregator.kafka.producer.FeatureProducer;
+import com.sudhird.risk.feature_aggregator.model.RiskDecision;
 import com.sudhird.risk.feature_aggregator.model.UserEvent;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +16,12 @@ public class FeatureService {
 
     private final RedisTemplate<String, String> redisTemplate;
     private final FeatureProducer producer;
+
+    @Autowired
+    private DecisionProducer decisionProducer;
+
+    @Autowired
+    private RiskClient riskClient;
 
     public FeatureService(RedisTemplate<String, String> redisTemplate,
                           FeatureProducer producer) {
@@ -32,7 +41,10 @@ public class FeatureService {
                 "login_1h", login1h
         );
 
+        RiskDecision decision = riskClient.score(userId, features);
+
         producer.publish(event, features);
+        decisionProducer.publish(event, decision);
     }
 
     private int increment(String key, int ttlSeconds) {

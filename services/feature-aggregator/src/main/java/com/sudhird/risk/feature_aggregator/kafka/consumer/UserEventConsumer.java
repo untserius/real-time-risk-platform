@@ -1,4 +1,4 @@
-package com.sudhird.risk.feature_aggregator.kafka;
+package com.sudhird.risk.feature_aggregator.kafka.consumer;
 
 import com.sudhird.risk.feature_aggregator.model.UserEvent;
 import com.sudhird.risk.feature_aggregator.service.FeatureService;
@@ -19,7 +19,6 @@ public class UserEventConsumer {
     public void consume(UserEvent event, Acknowledgment ack) {
 
         featureService.process(event);
-
         ack.acknowledge(); // at-least-once
     }
 }

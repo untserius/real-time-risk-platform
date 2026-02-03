@@ -11,16 +11,12 @@ import org.springframework.kafka.listener.ContainerProperties;
 public class KafkaConsumerConfig {
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, UserEvent>
-    kafkaListenerContainerFactory(
-            ConsumerFactory<String, UserEvent> consumerFactory) {
+    public ConcurrentKafkaListenerContainerFactory<String, UserEvent> kafkaListenerContainerFactory(ConsumerFactory<String, UserEvent> consumerFactory) {
 
-        ConcurrentKafkaListenerContainerFactory<String, UserEvent> factory =
-                new ConcurrentKafkaListenerContainerFactory<>();
+        ConcurrentKafkaListenerContainerFactory<String, UserEvent> factory = new ConcurrentKafkaListenerContainerFactory<>();
 
         factory.setConsumerFactory(consumerFactory);
-        factory.getContainerProperties().setAckMode(
-                ContainerProperties.AckMode.MANUAL);
+        factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL);
 
         return factory;
     }
