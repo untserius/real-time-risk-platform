@@ -43,7 +43,7 @@ public class FeatureService {
 
         RiskDecision decision = riskClient.score(userId, features);
 
-        producer.publish(event, features);
+//        producer.publish(event, features);
         decisionProducer.publish(event, decision);
     }
 

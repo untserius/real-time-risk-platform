@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Risk Alerts Dashboard</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #e5e7eb;
+      padding: 20px;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    #status {
+      margin-bottom: 15px;
+      color: #22c55e;
+    }
+
+    .alert {
+      padding: 12px;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      font-family: monospace;
+    }
+
+    .BLOCK {
+      background: #7f1d1d;
+      border-left: 5px solid #ef4444;
+    }
+
+    .CHALLENGE {
+      background: #78350f;
+      border-left: 5px solid #f59e0b;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🚨 Real-Time Risk Alerts</h1>
+<div id="status">Connecting...</div>
+<div id="alerts"></div>
+
+<script>
+  const statusEl = document.getElementById("status");
+  const alertsEl = document.getElementById("alerts");
+
+  const ws = new WebSocket("ws://localhost:8082/alerts");
+
+  ws.onopen = () => {
+    statusEl.textContent = "🟢 Connected to WebSocket";
+  };
+
+  ws.onclose = () => {
+    statusEl.textContent = "🔴 Disconnected";
+    statusEl.style.color = "#ef4444";
+  };
+
+  ws.onerror = () => {
+    statusEl.textContent = "⚠️ WebSocket error";
+    statusEl.style.color = "#f59e0b";
+  };
+
+  ws.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+
+    const div = document.createElement("div");
+    div.className = `alert ${data.decision}`;
+    div.textContent = JSON.stringify(data, null, 2);
+
+    alertsEl.prepend(div);
+  };
+</script>
+
+</body>
+</html>

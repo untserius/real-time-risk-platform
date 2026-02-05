@@ -1,12 +1,10 @@
-server:
-  port: 8080
-
 spring:
   application:
     name: event-api
 
   kafka:
     bootstrap-servers: localhost:9092
+
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
@@ -14,7 +12,5 @@ spring:
         spring.json.trusted.packages: "*"
         spring.json.add.type.headers: false
 
-
-
-
-
+server:
+  port: 8080
